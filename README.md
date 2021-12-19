@@ -1,8 +1,18 @@
 # Application Architecture - The UI Layer - Guess It!
-This is the toy app for lesson 5 of the [Android App Development in Kotlin course on Udacity](https://www.udacity.com/course/developing-android-apps-with-kotlin--ud9012).
+This is the toy app for lesson 5 of the [Udacity: Developing Android Apps with Kotlin course.](https://classroom.udacity.com/courses/ud9012).
+- How to use ViewModel 
+- How to use LiveData
+- Data Binding with viewModel and xml.
 
-## Guess It!
+## Highlight for lesson 4: 
+### Our App Architecture
+The software design principle that we're going to be following is called seperation of concerns. This says that our app should be divided into classes, each that have separate responsibilites. 
+Architecture gives you guidelines to figure out which classes should have what responisibilites in your app. 
+We will be working with three different classes, the UI controller, the ViewModel and LiveData. 
 
+
+## Lesson 4: App Architecture
+This is the forth android project in [
 Guess It is a word guessing app you can play with one or more friends. To play, hold the device in landscape, facing away from you with your thumbs on the **Skip** and **Got It** buttons. Your friends can then give you clues to help you guess the word. 
 
 If you get the word right, press **Got It**. If you're stuck, press **Skip**. The game runs for a minute and then shows you your score.
