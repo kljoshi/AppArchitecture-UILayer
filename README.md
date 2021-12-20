@@ -12,7 +12,7 @@ We will be working with three different classes, the UI controller, the ViewMode
 
 --------------
 #### ViewModel
-
+ViewModel will do the 
 ViewModel will do the actual decision making, the purpose of the ViewModel is to hold the specific data needed to display the fragment or activity it's associated with. Also, ViewModel may do simple calculations and transfroamtions on that data so that it's ready to be displayed by the UI controller. The ViewModel class will contain instances of a third class, LiveData. 
 --------------
 #### LiveData
