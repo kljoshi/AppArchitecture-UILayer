@@ -64,6 +64,7 @@ Encapsulation is the notion of restricted direct access to the object’s fields
 We can use backing property. A backing property allows you to return something from a getter other than the exact object.   Example: ```
 private val _score = MutableLiveData<Int>()
 val score: LiveData<Int> = _score```
+
 --------------
 ### How to model an event like to navigate to a new screen.  
 Steps:
