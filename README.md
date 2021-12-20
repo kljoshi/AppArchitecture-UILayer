@@ -119,7 +119,7 @@ Since the ViewModel holds lot of UI data, so it’s actually a really great obje
 Beyond holding the UI data, the viewModel is also responsible for doing simple manipulations to make the data ready for the screen. One of the easiest ways to do simple data manipulations to LiveData, such as changing an integer to a string, is by using a method called transformation.map. We can think of LiveData as an object that emits data when it changes. For example, when we update the time, it emits the updated time to all of the UI controllers observing it. 
 
 --------------
-Recap:
+### Recap:
 In this lesson we have first experience with Android app architecture. Architecture is powerful because it gives you guidelines by which to separate your code so that each class has specific responsibilities. This keeps things more organized, debuggable, modular, and testable. In our case, our architecture starts with the UI controllers, which are responsible for drawing items onscreen android detecting user and OS events. 
 
 Then, you learned about ViewModels, which are great location for putting all of the data needed to display Ui controllers because they service configuration changes. Then you learned about LiveData which wraps around our data and allows it to be observed by UI controllers. LiveData has the added bonus of being lifecycle-aware. 
