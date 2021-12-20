@@ -27,8 +27,25 @@ Note: You never construct ViewModel yourself. If you did, you’d end up constru
 
 
 ### ViewModel vs UI controller (What kind of data to hold on each)
- - UI controller only displays and get user/OS events - ViewModel holds data for UI - UI Controller does NOT make decisions
+- UI controller only displays and get user/OS events
+- ViewModel holds data for UI
+- UI Controller does NOT make decisions
 - ViewModel never references fragments and activities or views.
+
+### Benefits of Architecture
+1. The code is more organized, manageable and debuggable. 
+2. By moving code to the viewModel, you protect yourself from having to worry about lifecycle problem and bugs. 
+3. The code is very modular. 
+4. The viewModel contains no references to activities, fragments, or views. This happens to be helpful for testing.  
+
+### The power and limits of the ViewModel.
+
+- The first issue is a pre-existing issue that we had before. The ViewModel does preserve data with the configuration changes, but this data is still lost when an app is shut down by the operating system. 
+- We need a way to communicate from the ViewModel back to the UI controller without having the ViewModel store references to any views, activities or fragments. We can use **_LiveData_** for this. 
+
+Adding LiveData steps:
+1. Add the variable in viewModel and wrap the variable in MutableLiveData. If the variable is Int. example:  ```val score = MutableLiveData<Int>()```
+2. Add the observer to UI component. example: ```viewModel.score.observe(this, Observer { newScore ->  binding.scoreText.text = newScore.toString() })```
 
 ## Lesson 4: App Architecture
 This is the forth android project in [
