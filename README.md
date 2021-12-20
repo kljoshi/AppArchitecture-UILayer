@@ -87,9 +87,10 @@ Look at the ScoreViewModel and ScoreViewModelFactory.
 ### ViewModel and Data Binding 
 Adding data binding with life-cycle library support. This will clean up boilerplate code and let us use data binding to its full potential. 
 
-￼
+<img width="710" alt="Data changes in ViewModel" src="https://user-images.githubusercontent.com/43662326/146818985-8ecab440-230a-4a4c-9758-8476310773ab.png">
 Right now we have our XML layout which defines views, and we have data for those views in the ViewModel. In-between sits the UI Controller, which is really just acting as a relay between the two. For example, when data in the ViewModel changes an observer the fragment will update the views.
-￼
+
+<img width="536" alt="(defined in XML layout)" src="https://user-images.githubusercontent.com/43662326/146819019-fad35586-c554-4a31-b59f-2cfca93f8d2c.png">
  I would be simpler if the data and the views could just communicate directly without relying on the UI controller so much as an intermediary. 
 
 Since the ViewModel holds lot of UI data, so it’s actually a really great object to pass into the data binding. Once it’s done, we can automate some of the communication between the ViewModel and the views to that you don’t need to even involve the UI controller. 
