@@ -11,6 +11,20 @@ Architecture gives you guidelines to figure out which classes should have what r
 We will be working with three different classes, the UI controller, the ViewModel and LiveData. 
 
 
+#### ViewModel
+ViewModel will do the actual decision making, the purpose of the ViewModel is to hold the specific data needed to display the fragment or activity it's associated with. Also, ViewModel may do simple calculations and transfroamtions on that data so that it's ready to be displayed by the UI controller. The ViewModel class will contain instances of a third class, LiveData. 
+
+#### LiveData
+LiveData classes are crucial for communicating information for the ViewModel to the UI controller, that is should update and redraw the screen. 
+
+### Creating a ViewModel 
+ViewModel is an abstract class that you will extend and then implement. It holds your apps UI data and survive’s configuration changes.   Instead of having the UI data at the fragment, move it to your ViewModel and have the fragment reference the ViewModel. The ViewModel survive’s configuration changes so while the fragment is destroyed and then remade, all of the data that you need to display in the fragment, remain in the ViewModel.   Steps:
+1. Add dependency Open app gradle file and add the dependency:  ```implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0' ``` And since gradle.   
+2. Create SomethingViewModel class, extending ViewModel: Create a new file called SomethingViewModel.kt and extend the ViewModel. ```class GameViewModel : ViewModel()``` Note: ViewModel get destroyed when the activity or fragment the view model is associated with is finally and completely destroyed. Right before this happens, there’s a callback called In the ViewModel class called onCleared. 
+3. Associated UI controller and ViewModel.  Create and initialized a NameViewModel, using ViewModelProviders.   Back in SomethingFragment use **_lateinit_** to create a field for SomethingViewModel called ViewModel. Then in onCreateView, request the current SomethingViewModel using the ViewModelProviders class:  ``` viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)```
+Note: You never construct ViewModel yourself. If you did, you’d end up constructing a ViewModel every time the fragment was recreated. 
+
+
 ## Lesson 4: App Architecture
 This is the forth android project in [
 Guess It is a word guessing app you can play with one or more friends. To play, hold the device in landscape, facing away from you with your thumbs on the **Skip** and **Got It** buttons. Your friends can then give you clues to help you guess the word. 
