@@ -47,6 +47,12 @@ Adding LiveData steps:
 1. Add the variable in viewModel and wrap the variable in MutableLiveData. If the variable is Int. example:  ```val score = MutableLiveData<Int>()```
 2. Add the observer to UI component. example: ```viewModel.score.observe(this, Observer { newScore ->  binding.scoreText.text = newScore.toString() })```
 
+### LiveData is LifeCycle Aware
+ This means that LiveData knows about the lifecycle state of its UI controller observers. LiveData uses this information to interact intelligently with your fragments and activities.   Things to know:
+1. LiveData will only update UI controller that are actually on-screen. If your fragment goes off-screen and the value of LiveData changes, four times, it would not update the off-screen fragment. Only when the UI controller goes from off-screen back to on-screen, LiveData will always trigger the observer with the most recent data. 
+2. If the LiveData already exists with some data, and a new UI controller starts to observe it, it’ll get the current data immediately. 
+3. Finally, if the UI controller gets destroyed, the LiveData will actually internally clean up its own connection to the observer. 
+
 ## Lesson 4: App Architecture
 This is the forth android project in [
 Guess It is a word guessing app you can play with one or more friends. To play, hold the device in landscape, facing away from you with your thumbs on the **Skip** and **Got It** buttons. Your friends can then give you clues to help you guess the word. 
