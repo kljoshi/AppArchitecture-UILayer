@@ -22,8 +22,13 @@ ViewModel is an abstract class that you will extend and then implement. It holds
 1. Add dependency Open app gradle file and add the dependency:  ```implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0' ``` And since gradle.   
 2. Create SomethingViewModel class, extending ViewModel: Create a new file called SomethingViewModel.kt and extend the ViewModel. ```class GameViewModel : ViewModel()``` Note: ViewModel get destroyed when the activity or fragment the view model is associated with is finally and completely destroyed. Right before this happens, there’s a callback called In the ViewModel class called onCleared. 
 3. Associated UI controller and ViewModel.  Create and initialized a NameViewModel, using ViewModelProviders.   Back in SomethingFragment use **_lateinit_** to create a field for SomethingViewModel called ViewModel. Then in onCreateView, request the current SomethingViewModel using the ViewModelProviders class:  ``` viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)```
+
 Note: You never construct ViewModel yourself. If you did, you’d end up constructing a ViewModel every time the fragment was recreated. 
 
+
+### ViewModel vs UI controller (What kind of data to hold on each)
+ - UI controller only displays and get user/OS events - ViewModel holds data for UI - UI Controller does NOT make decisions
+- ViewModel never references fragments and activities or views.
 
 ## Lesson 4: App Architecture
 This is the forth android project in [
