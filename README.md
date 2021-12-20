@@ -13,9 +13,11 @@ We will be working with three different classes, the UI controller, the ViewMode
 --------------
 #### ViewModel
 ViewModel will do the actual decision making, the purpose of the ViewModel is to hold the specific data needed to display the fragment or activity it's associated with. Also, ViewModel may do simple calculations and transfroamtions on that data so that it's ready to be displayed by the UI controller. The ViewModel class will contain instances of a third class, LiveData. 
+
 --------------
 ### LiveData
 LiveData classes are crucial for communicating information for the ViewModel to the UI controller, that is should update and redraw the screen. 
+
 --------------
 ### Creating a ViewModel 
 ViewModel is an abstract class that you will extend and then implement. It holds your apps UI data and survive’s configuration changes.   Instead of having the UI data at the fragment, move it to your ViewModel and have the fragment reference the ViewModel. The ViewModel survive’s configuration changes so while the fragment is destroyed and then remade, all of the data that you need to display in the fragment, remain in the ViewModel.   Steps:
@@ -24,18 +26,21 @@ ViewModel is an abstract class that you will extend and then implement. It holds
 3. Associated UI controller and ViewModel.  Create and initialized a NameViewModel, using ViewModelProviders.   Back in SomethingFragment use **_lateinit_** to create a field for SomethingViewModel called ViewModel. Then in onCreateView, request the current SomethingViewModel using the ViewModelProviders class:  ``` viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)```
 
 Note: You never construct ViewModel yourself. If you did, you’d end up constructing a ViewModel every time the fragment was recreated. 
+
 --------------
 ### ViewModel vs UI controller (What kind of data to hold on each)
 - UI controller only displays and get user/OS events
 - ViewModel holds data for UI
 - UI Controller does NOT make decisions
 - ViewModel never references fragments and activities or views.
+
 --------------
 ### Benefits of Architecture
 1. The code is more organized, manageable and debuggable. 
 2. By moving code to the viewModel, you protect yourself from having to worry about lifecycle problem and bugs. 
 3. The code is very modular. 
 4. The viewModel contains no references to activities, fragments, or views. This happens to be helpful for testing.  
+
 --------------
 ### The power and limits of the ViewModel.
 
@@ -72,6 +77,7 @@ In the observer lambda you should:
 - Tell the view model that you've handled the game finished event by calling **_onGameFinishComplete._**
 
 What is the benefit of using event function? It is to tell the viewModel that certain event has taken place already. For example: We want to display the Toast only once but if we rotate the screen it will take the current value in the viewModel and display the Toast again. Thats why we need to create an event function that will handle this case of only showing the Toast once. 
+
 --------------
 ### Passing Data to ViewModel 
 The general idea to pass data to ViewModel is to create a class known as ViewModel Factory. 
