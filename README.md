@@ -53,109 +53,68 @@ Adding LiveData steps:
 2. If the LiveData already exists with some data, and a new UI controller starts to observe it, it’ll get the current data immediately. 
 3. Finally, if the UI controller gets destroyed, the LiveData will actually internally clean up its own connection to the observer. 
 
-## Lesson 4: App Architecture
-This is the forth android project in [
-Guess It is a word guessing app you can play with one or more friends. To play, hold the device in landscape, facing away from you with your thumbs on the **Skip** and **Got It** buttons. Your friends can then give you clues to help you guess the word. 
+### Adding LiveData Encapsulation to ViewModel 
 
-If you get the word right, press **Got It**. If you're stuck, press **Skip**. The game runs for a minute and then shows you your score.
+Encapsulation is the notion of restricted direct access to the object’s fields. This way, you could expose a public set of methods that modify the private internal fields, and you can control the exact way outside classes can and can’t manipulate these internal fields. 
+
+We can use backing property. A backing property allows you to return something from a getter other than the exact object.   Example: ```
+private val _score = MutableLiveData<Int>()
+val score: LiveData<Int> = _score```
+
+### How to model an event like to navigate to a new screen.  
+Steps:
+1. Make a properly encapsulated LiveData called eventGameFinish that holds a boolean.
+2. Make the function **_onGameFinishComplete_** which makes the value of **_eventGameFinish_** false.
+3. Set **_eventGameFinish_** to true, to signify that the game is over.
+4. Add an observer of **_eventGameFinish_**.
+In the observer lambda you should:
+- Make sure that the boolean holding the current value of ```eventGameFinished``` is true. This means the game has finished.
+- If the game has finished, call gameFinished.
+- Tell the view model that you've handled the game finished event by calling **_onGameFinishComplete._**
+
+What is the benefit of using event function? It is to tell the viewModel that certain event has taken place already. For example: We want to display the Toast only once but if we rotate the screen it will take the current value in the viewModel and display the Toast again. Thats why we need to create an event function that will handle this case of only showing the Toast once. 
+
+### Passing Data to ViewModel 
+The general idea to pass data to ViewModel is to create a class known as ViewModel Factory. 
+
+Factories are classes that know how to initiate objects. Therefore, our ViewModel Factory is a class that knows how to create ViewModels.   Steps:
+1. Create a ViewModel that takes in a constructor parameter
+2. Make a ViewModel Factory for ViewModel 
+3. Have factory construct ViewModel with constructor parameter 
+4.  Finally, add the viewModel Factory to the call to ViewModelProviders. 
+Look at the ScoreViewModel and ScoreViewModelFactory. 
+
+### ViewModel and Data Binding 
+Adding data binding with life-cycle library support. This will clean up boilerplate code and let us use data binding to its full potential. 
+
+￼
+Right now we have our XML layout which defines views, and we have data for those views in the ViewModel. In-between sits the UI Controller, which is really just acting as a relay between the two. For example, when data in the ViewModel changes an observer the fragment will update the views.
+￼
+ I would be simpler if the data and the views could just communicate directly without relying on the UI controller so much as an intermediary. 
+
+Since the ViewModel holds lot of UI data, so it’s actually a really great object to pass into the data binding. Once it’s done, we can automate some of the communication between the ViewModel and the views to that you don’t need to even involve the UI controller. 
+
+ Sets to add binding to ViewModel:
+1. Add a viewModel data binding variable to Fragment layout: <data>
+    <variable
+        name="gameViewModel"
+        type="com.example.android.guesstheword.screens.game.GameViewModel" />
+</data> 
+2. In the Fragment layout, use the ViewModel variable and data binding to handle clicking: Example: android:onClick=“@{() -> viewModel.onSkip()}”
+3. Pass the ViewModel into the data binding: binding.viewModel = ViewModel
+
+### Add LiveData Data Binding
+
+- For TextView use the LiveData from ViewModel to set the text attribute: android:text="@{@string/quote_format(gameViewModel.word)}"
+- Call binding.setLifecycleOwner to make the data binding lifecycle aware: To make data binding lifecycle aware and to have it play nicely with LiveData, we need to call binding.setLifecycleOvwner. And pass in “this” — which refers to GameFragment.  binding.setLifecycleOwner(this)
 
 
-## Screenshots
-
-![Screenshot 0](screenshots/screen0.png) ![Screenshot 1](screenshots/screen1.png) ![Screenshot 2](screenshots/screen2.png)
-
-## How to use this repo while taking the course
-
-Each code repository in this class has a chain of commits that looks like this:
-
-![listofcommits](https://d17h27t6h515a5.cloudfront.net/topher/2017/March/58befe2e_listofcommits/listofcommits.png)
-
-These commits show every step you'll take to create the app. Each commit contains instructions for completing the step.
-
-Each commit also has a **branch** associated with it of the same name as the commit message, as seen below:
-
-![branches](https://d17h27t6h515a5.cloudfront.net/topher/2017/April/590390fe_branches-ud855/branches-ud855.png
-)
-Access all branches from this tab.
-
-![listofbranches](https://d17h27t6h515a5.cloudfront.net/topher/2017/March/58befe76_listofbranches/listofbranches.png
-)
+### LiveData Map Transformation 
+Beyond holding the UI data, the viewModel is also responsible for doing simple manipulations to make the data ready for the screen. One of the easiest ways to do simple data manipulations to LiveData, such as changing an integer to a string, is by using a method called transformation.map. We can think of LiveData as an object that emits data when it changes. For example, when we update the time, it emits the updated time to all of the UI controllers observing it. 
 
 
-![branchesdropdown](https://d17h27t6h515a5.cloudfront.net/topher/2017/April/590391a3_branches-dropdown-ud855/branches-dropdown-ud855.png
-)
+Recap:
+In this lesson we have first experience with Android app architecture. Architecture is powerful because it gives you guidelines by which to separate your code so that each class has specific responsibilities. This keeps things more organized, debuggable, modular, and testable. In our case, our architecture starts with the UI controllers, which are responsible for drawing items onscreen android detecting user and OS events. Then, you learned about ViewModels, which are great location for putting all of the data needed to display Ui controllers because they service configuration changes. Then you learned about LiveData which wraps around our data and allows it to be observed by UI controllers. LiveData has the added bonus of being lifecycle-aware.  Finally, you increased your knowledge of data binding by learning how to make your data binding lifecycle-aware, and how to bind XML layouts to LiveData objects. Thus, making layouts that are automatically updated when LiveData changes. One thing that you might have noticed is that you moved around a lot of code over to the ViewModel. In larger apps, you want to make sure that your VieModel doesn’t take on too much responsibility and become bloated like your game fragment was. We’re going to further refine the role of the ViewModel in future lessons and add additional classes to this architecture. 
 
-The branches are also accessible from the drop-down in the "Code" tab.
-
-
-## Working with the Course Code
-
-Here are the basic steps for working with and completing exercises in the repo.
-
-The basic steps are:
-
-1. Clone the repo.
-2. `checkout` the branch corresponding to the step you want to attempt.
-3. Find and complete the TODOs.
-4. Optionally commit your code changes.
-5. Compare your code with the solution.
-6. Repeat steps 2-5 until you've gone trough all the steps to complete the toy app.
-
-
-**Step 1: Clone the repo**
-
-As you go through the course, you'll be instructed to clone the different exercise repositories, so you don't need to set these up now. You can clone a repository from GitHub in a folder of your choice with the command:
-
-```bash
-git clone https://github.com/udacity/REPOSITORY_NAME.git
-```
-
-**Step 2: Check out the step branch**
-
-As you go through different steps in the code, you'll be told which step you're on, as well as given a link to the corresponding branch.
-
-Check out the branch associated with that step. The command to check out a branch is:
-
-```bash
-git checkout BRANCH_NAME
-```
-
-**Step 3: Find and complete the TODOs**
-
-Once you've checked out the branch, you'll have the code in the exact state you need. You'll even have TODOs, which are special comments that tell you all the steps you need to complete the exercise. You can navigate to all the TODOs using Android Studio's TODO tool. To open the TODO tool, click the button at the bottom of the screen that says TODO. This will display a list of all comments with TODO in the project. 
-
-We've numbered the TODO steps so you can do them in order:
-![todos](https://d17h27t6h515a5.cloudfront.net/topher/2017/March/58bf00e7_todos/todos.png
-)
-
-**Step 4: Commit your code changes**
-
-After you've completed the TODOs, you can optionally commit your changes. This will allow you to see the code you wrote whenever you return to the branch. The following git code will add and save **all** your changes.
-
-```bash
-git add .
-git commit -m "Your commit message"
-```
-
-**Step 5: Compare with the solution**
-
-Most exercises will have a list of steps for you to check off in the classroom. Once you've checked these off, you'll see a pop up window with a link to the solution code. Note the **Diff** link after the Solution link:
-
-![solutionwindow](https://d17h27t6h515a5.cloudfront.net/topher/2017/March/58bf00f9_solutionwindow/solutionwindow.png
-)
-
-The **Diff** link will take you to a GitHub diff as seen below:
-![diff](https://d17h27t6h515a5.cloudfront.net/topher/2017/March/58bf0108_diffsceenshot/diffsceenshot.png
-)
-
-All of the code that was added in the solution is in green, and the removed code (which will usually be the TODO comments) is in red. 
-
-You can also diff your local copy of the code with the corresponding branch as you are working on it:
-
-```bash
-git diff BRANCH_NAME
-```
-
-## Report Issues
-Notice any issues with a repository? Please file a GitHub issue in the repository.
+The first edition is learning how to save data permanently on the device, so even if the app is destroyed in the background or if your user restarts their device, this data will still be available to them. This is called the data layer, and its what you’ll be exploring in the next lesson. 
 
