@@ -1,4 +1,4 @@
-# Application Architecture - The UI Layer - Guess It!
+# Application Architecture - The UI Layer - Guess It! - Lesson 5
 This is the Guess it app for lesson 5 of the [Udacity: Developing Android Apps with Kotlin course.](https://classroom.udacity.com/courses/ud9012).
 - How to use ViewModel 
 - How to use LiveData
