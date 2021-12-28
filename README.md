@@ -4,7 +4,7 @@ This is the Guess it app for lesson 5 of the [Udacity: Developing Android Apps w
 - How to use LiveData
 - Data Binding with viewModel and xml.
 
-## Highlight for lesson 4: 
+## Highlight for lesson 5: 
 ### Our App Architecture
 The software design principle that we're going to be following is called seperation of concerns. This says that our app should be divided into classes, each that have separate responsibilites. 
 Architecture gives you guidelines to figure out which classes should have what responisibilites in your app. 
